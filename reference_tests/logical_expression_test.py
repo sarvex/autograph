@@ -52,7 +52,7 @@ def multiple_equality(x, y, z):
 
 
 def comparison(x, y, z):
-  return x < y and y < z
+  return x < y < z
 
 
 class ReferenceTest(reference_test_base.TestCase):

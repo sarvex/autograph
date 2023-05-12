@@ -91,19 +91,13 @@ def cb_len(begin, end, size):
 
 def cb_range(begin, end, size):
   """Circular buffer range primitive."""
-  if end < begin:
-    virtual_end = end + size
-  else:
-    virtual_end = end
+  virtual_end = end + size if end < begin else end
   return tf.range(begin, virtual_end) % size
 
 
 def cb_rev_range(begin, end, size):
   """Circular buffer reversed range primitive."""
-  if end < begin:
-    virtual_end = end + size
-  else:
-    virtual_end = end
+  virtual_end = end + size if end < begin else end
   return tf.range(virtual_end - 1, begin - 1, -1) % size
 
 

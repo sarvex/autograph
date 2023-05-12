@@ -26,11 +26,7 @@ import tensorflow.compat.v1 as tf
 
 
 def independent_ifs(x, y):
-  z = 0
-  if x > 0:
-    if y > 0:
-      z = x + y
-  return z
+  return x + y if x > 0 and y > 0 else 0
 
 
 def dependent_inner_if(x):
@@ -46,10 +42,9 @@ def dependent_inner_if(x):
 
 def dependent_imbalanced_inner_if(x):
   y = 0
-  if x > 0:
-    if x < 3:
-      y = -2 * x
-      x = -3 * x
+  if x > 0 and x < 3:
+    y = -2 * x
+    x = -3 * x
   return x, y
 
 
@@ -96,12 +91,7 @@ def dependent_inner_while(a, b):
 
 
 def if_in_for(a):
-  k = 0
-  for i in a:
-    if i % 2 > 0:
-      j = i // 2
-      k += j
-  return k
+  return sum(i // 2 for i in a if i % 2 > 0)
 
 
 def while_with_continue_in_context_manager(x):

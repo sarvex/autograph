@@ -31,21 +31,19 @@ def consecutive_conds(x):
   else:
     x = -2 * x if x < 5 else 1
   if x > 0:
-    x = -x if x < 5 else x
+    return -x if x < 5 else x
   else:
-    x = (3 * x) if x < 5 else x
-  return x
+    return (3 * x) if x < 5 else x
 
 
 def cond_with_multiple_values(x):
   if x > 0:
     x = -x if x < 5 else x
     y = 2 * x if x < 5 else x
-    z = -y if y < 5 else y
   else:
     x = 2 * x if x < 5 else x
     y = -x if x < 5 else x
-    z = -y if y < 5 else y
+  z = -y if y < 5 else y
   return x, y, z
 
 

@@ -30,8 +30,7 @@ def basic_generator():
 
 
 def generator_in_for(n):
-  for i in range(n):
-    yield i
+  yield from range(n)
 
 
 def generator_in_while(n):

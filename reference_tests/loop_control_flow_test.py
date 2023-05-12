@@ -28,12 +28,7 @@ import tensorflow.compat.v1 as tf
 
 
 def continue_in_single_for(l):
-  s = 0
-  for c in l:
-    if c % 2 > 0:
-      continue
-    s += c
-  return s
+  return sum(c for c in l if c % 2 <= 0)
 
 
 def continue_in_single_while(x):
@@ -148,8 +143,7 @@ def break_followed_by_cond_in_single_while(x):
   while x > 0:
     if x == 2:
       break
-    if x > 0:
-      x -= 1
+    x -= 1
   return x
 
 

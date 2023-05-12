@@ -26,8 +26,7 @@ import tensorflow.compat.v1 as tf
 
 def inline_namedtuple(x):
   nt = collections.namedtuple('TestNamedTuple', ('a', 'b'))
-  n = nt(a=1, b=x)
-  return n
+  return nt(a=1, b=x)
 
 
 def external_namedtuple(x, nt):

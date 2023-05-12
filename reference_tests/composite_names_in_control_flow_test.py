@@ -26,10 +26,7 @@ import tensorflow.compat.v1 as tf
 
 
 def cond_basic(x):
-  if x.a > 0:
-    x.b = 1
-  else:
-    x.b = -1
+  x.b = 1 if x.a > 0 else -1
   return x
 
 

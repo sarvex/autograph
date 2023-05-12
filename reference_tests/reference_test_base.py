@@ -39,7 +39,7 @@ class MutableContainer(object):
       setattr(self, k, kwargs[k])
 
   def __str__(self):
-    return 'MutableContainer%s' % self.__dict__
+    return f'MutableContainer{self.__dict__}'
 
   def __ne__(self, other):
     return not self.__eq__(other)
@@ -106,10 +106,10 @@ class TestCase(tf.test.TestCase):
       sys.stdout = out_capturer
       results = func()
       captured_out = out_capturer.getvalue()
-    except Exception as e:  # pylint:disable=broad-except
+    except Exception as e:# pylint:disable=broad-except
       sys.stdout = sys.__stdout__
       captured_err = e
-      print('*** Capturing exception:\n{}\n'.format(traceback.format_exc()))
+      print(f'*** Capturing exception:\n{traceback.format_exc()}\n')
     finally:
       sys.stdout = sys.__stdout__
       out_capturer.close()
@@ -150,10 +150,7 @@ class TestCase(tf.test.TestCase):
     with self.test_session() as sess:
       f_outs = f(*self._as_tensors(args))
 
-      if isinstance(f_outs, tuple):
-        outs = f_outs
-      else:
-        outs = (f_outs,)
+      outs = f_outs if isinstance(f_outs, tuple) else (f_outs, )
       if f_outs is None:
         return None, '', None
 
@@ -171,11 +168,9 @@ class TestCase(tf.test.TestCase):
       else:
         final_outs = (None,)
 
-      if isinstance(f_outs, tuple):
-        return final_outs, captured_out, captured_err
-      else:
-        return final_outs[0], captured_out, captured_err
-      return final_outs
+      return ((final_outs, captured_out,
+               captured_err) if isinstance(f_outs, tuple) else
+              (final_outs[0], captured_out, captured_err))
 
   def _deep_equal(self, left, right):
     if isinstance(left, tf.Tensor):
@@ -199,7 +194,7 @@ class TestCase(tf.test.TestCase):
                          compiled_data):
     native_results, native_out, native_err = native_data
     compiled_results, compiled_out, compiled_err = compiled_data
-    str_args = '(%s)' % ', '.join(str(a) for a in args)
+    str_args = f"({', '.join(str(a) for a in args)})"
     # Using a manual verification to avoid a second compilation on success.
     # For exceptions, we don't enforce that they are the same, only that
     # both paths raised.
@@ -209,30 +204,33 @@ class TestCase(tf.test.TestCase):
         native_out == compiled_out)
     errors_equivalent = type(native_err) == type(compiled_err)  # pylint:disable=unidiomatic-typecheck
     if (not outputs_equal or not errors_equivalent):
-      self.fail('Native and compiled functions are not equivalent.\n\n'
-                'Native results: %s\n'
-                'Compiled results: %s\n'
-                'Native out: %s\n'
-                'Compiled out: %s\n'
-                'Native error: %s\n'
-                'Compiled error: %s\n'
-                'Native call: %s%s\n'
-                'Check the logs for the generated code.'
-                '' %
-                (termcolor.colored(native_results, 'green', attrs=['bold']),
-                 termcolor.colored(compiled_results, 'red', attrs=['bold']),
-                 termcolor.colored(native_out, 'green', attrs=['bold']),
-                 termcolor.colored(compiled_out, 'red', attrs=['bold']),
-                 termcolor.colored(
-                     '%s: %s' % (type(native_err).__name__, native_err),
-                     'green',
-                     attrs=['bold']),
-                 termcolor.colored(
-                     '%s: %s' % (type(compiled_err).__name__, compiled_err),
-                     'red',
-                     attrs=['bold']),
-                 termcolor.colored(f.__name__, 'blue', attrs=['bold']),
-                 termcolor.colored(str_args, 'blue', attrs=['bold'])))
+      self.fail(('Native and compiled functions are not equivalent.\n\n'
+                 'Native results: %s\n'
+                 'Compiled results: %s\n'
+                 'Native out: %s\n'
+                 'Compiled out: %s\n'
+                 'Native error: %s\n'
+                 'Compiled error: %s\n'
+                 'Native call: %s%s\n'
+                 'Check the logs for the generated code.'
+                 '' % (
+                     termcolor.colored(native_results, 'green', attrs=['bold']),
+                     termcolor.colored(compiled_results, 'red', attrs=['bold']),
+                     termcolor.colored(native_out, 'green', attrs=['bold']),
+                     termcolor.colored(compiled_out, 'red', attrs=['bold']),
+                     termcolor.colored(
+                         f'{type(native_err).__name__}: {native_err}',
+                         'green',
+                         attrs=['bold'],
+                     ),
+                     termcolor.colored(
+                         f'{type(compiled_err).__name__}: {compiled_err}',
+                         'red',
+                         attrs=['bold'],
+                     ),
+                     termcolor.colored(f.__name__, 'blue', attrs=['bold']),
+                     termcolor.colored(str_args, 'blue', attrs=['bold']),
+                 )))
 
   def assertFunctionMatchesEagerStatefulInput(self, f, args):
     """Like assertFunctionMatchesEager but creates new inputs each time."""

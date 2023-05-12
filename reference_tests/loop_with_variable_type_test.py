@@ -110,8 +110,8 @@ def for_with_variable_shape_growing_matrix(l):
 
 def while_with_variable_shape_inside_if(n):
   v = tf.constant([0, 0])
-  i = 0
   if n > 1:
+    i = 0
     while i < n:
       tf.autograph.experimental.set_loop_options(
           shape_invariants=[(v, tf.TensorShape([None]))])
@@ -137,8 +137,8 @@ def for_with_variable_shape_inside_if(n):
 
 def while_with_variable_shape_and_break(n):
   v = tf.constant([0, 0])
-  i = 0
   if n > 1:
+    i = 0
     while i < n:
       tf.autograph.experimental.set_loop_options(
           shape_invariants=[(v, tf.TensorShape([None]))])

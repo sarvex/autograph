@@ -55,11 +55,8 @@ def for_initializes_local_var(l):
 
 def while_initializes_local_var(x):
   s = 0
+  y = 0
   while x > 0:
-    if x > 0:
-      y = 0
-    else:
-      y += 1
     s = s * 10 + y
     x -= 1
   return s

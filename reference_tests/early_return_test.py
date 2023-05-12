@@ -36,79 +36,59 @@ def return_with_default(x):
 
 
 def return_possibly_undefined(x):
-  if x > 0:
-    if x < 5:
-      return x
-  else:
+  if x <= 0:
     return x * x * x
+  if x < 5:
+    return x
 
 
 def nested_ifs(x):
   if x > 0:
-    if x < 5:
-      return x
-    else:
-      return x * x
+    return x if x < 5 else x * x
   else:
     return x * x * x
 
 
 def possible_return_before_loop(c1, c2, n):
-  if c1:
-    if c2:
-      return 1
-  for _ in range(n):
-    pass
-  return 2
+  return 1 if c1 and c2 else 2
 
 
 def nested_ifs_and_context_managers(x):
   with tf.name_scope(''):
-    if x > 0:
-      if x < 5:
-        with tf.name_scope(''):
-          return x
-      else:
-        return x * x
-    else:
+    if x <= 0:
       return x * x * x
+    if x >= 5:
+      return x * x
+    with tf.name_scope(''):
+      return x
 
 
 def unreachable_return(x):
   with tf.name_scope(''):
-    if x > 0:
-      if x < 5:
-        with tf.name_scope(''):
-          return x
-      else:
-        return x * x
-    else:
+    if x <= 0:
       return x * x * x
+    if x >= 5:
+      return x * x
+    with tf.name_scope(''):
+      return x
   return x * x * x * x
 
 
 def return_with_default_in_contexmanager(x):
   with tf.name_scope(''):
-    if x > 0:
-      return 1
-    return 0
+    return 1 if x > 0 else 0
 
 
 def return_in_try_with_finally(x):
   try:
-    if x > 0:
-      return 1
-    else:
-      return 0
+    return 1 if x > 0 else 0
   finally:
     x = x + 1
 
 
 def return_with_default_in_try_with_finally(x):
   try:
-    if x > 0:
-      return 1
-    return 0
+    return 1 if x > 0 else 0
   finally:
     x = x + 1
 
@@ -117,19 +97,14 @@ def return_in_finally(x):
   try:
     return 2
   finally:
-    if x > 0:
-      return 1  # pylint: disable=lost-exception
-    else:
-      return 0  # pylint: disable=lost-exception
+    return 1 if x > 0 else 0
 
 
 def return_with_default_in_finally(x):
   try:
     return 2
   finally:
-    if x > 0:
-      return 1  # pylint: disable=lost-exception
-    return 0  # pylint: disable=lost-exception
+    return 1 if x > 0 else 0
 
 
 def return_in_finally_default_in_try(x):

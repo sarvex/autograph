@@ -53,10 +53,7 @@ def if_one_var(n):
 
 def if_else_one_var(n):
   i = 0
-  if i < n:
-    i += 1
-  else:
-    i += 2
+  i += 1 if i < n else 2
   return i
 
 
@@ -88,17 +85,11 @@ def if_creates_var(c):
 
 
 def if_else_creates_var(c):
-  if c:
-    i = 1
-  else:
-    i = 2
-  return i
+  return 1 if c else 2
 
 
 def else_creates_var(c):
-  if c:
-    pass
-  else:
+  if not c:
     i = 2
   return i
 
@@ -113,32 +104,22 @@ def if_returns_none(c):
 
 
 def if_else_returns_none(c):
-  if c:
-    i = None
-    j = 1
-  else:
-    i = None
-    j = 2
+  j = 1 if c else 2
+  i = None
   return i, j
 
 
 def else_returns_none(c):
   i = 1
   j = 1
-  if c:
-    pass
-  else:
+  if not c:
     i = None
     j = 2
   return i, j
 
 
 def if_local_var(c):
-  i = 0
-  if c:
-    j = 1
-    i = j + 1
-  return i
+  return 1 + 1 if c else 0
 
 
 def if_else_local_var(c):
@@ -200,9 +181,9 @@ def nested_ifs(n1, n2):
 def nested_if_elses(n1, n2):
   i = 0
   l = 0
+  j = 0
+  s = 0
   if i < n1:
-    j = 0
-    s = 0
     if j < n2:
       s = s * 10 + i * j
       j += 1
@@ -210,10 +191,7 @@ def nested_if_elses(n1, n2):
       s = s * 11 + i * j
       j += 2
     l = l * 1000 + s
-    i += 1
   else:
-    j = 0
-    s = 0
     if j < n2:
       s = s * 12 + i * j
       j += 3
@@ -221,7 +199,7 @@ def nested_if_elses(n1, n2):
       s = s * 13 + i * j
       j += 4
     l = l * 2000 + s
-    i += 1
+  i += 1
   return l
 
 

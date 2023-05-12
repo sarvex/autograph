@@ -74,11 +74,11 @@ def sin_dataset():
 
 
 def w(i):
-  return 'w{}'.format(i)
+  return f'w{i}'
 
 
 def b(i):
-  return 'b{}'.format(i)
+  return f'b{i}'
 
 
 def model_weights():
